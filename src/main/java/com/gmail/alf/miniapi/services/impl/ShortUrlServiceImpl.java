@@ -16,12 +16,12 @@ public class ShortUrlServiceImpl implements ShortUrlService {
     private ShortUrlRepository sortUrlRepository;
 
     @Override
-    public List<ShortUrl> findAllShortURLs() {
+    public List<ShortUrl> findAllShortUrls() {
         return (List<ShortUrl>) sortUrlRepository.findAll();
     }
 
     @Override
-    public ShortUrl findShortURLById(long id) throws ResourceNotFoundException {
+    public ShortUrl findShortUrlById(long id) throws ResourceNotFoundException {
         Optional<ShortUrl> shortUrl = sortUrlRepository.findById(id);
 
         if (shortUrl.isPresent()) {
@@ -32,15 +32,17 @@ public class ShortUrlServiceImpl implements ShortUrlService {
     }
 
     @Override
-    public ShortUrl createShortUrl(ShortUrl shortURL) {
-        return sortUrlRepository.save(shortURL);
+    public ShortUrl createShortUrl(ShortUrl shortUrl) {
+
+        shortUrl.setShortUrl(String.valueOf(shortUrl.getUrl().hashCode()));
+        return sortUrlRepository.save(shortUrl);
     }
 
     @Override
     public ShortUrl updateShortUrl(long id, ShortUrl shortUrl) {
 
         try {
-            ShortUrl shortUrlToUpdate = findShortURLById(id);
+            ShortUrl shortUrlToUpdate = findShortUrlById(id);
             shortUrlToUpdate.setShortUrl(shortUrl.getShortUrl());
             shortUrlToUpdate.setUrl(shortUrl.getUrl());
 
@@ -54,11 +56,24 @@ public class ShortUrlServiceImpl implements ShortUrlService {
     @Override
     public void deleteShortUrl(Long id) {
         try {
-            ShortUrl shortUrlToDelete = findShortURLById(id);
+            ShortUrl shortUrlToDelete = findShortUrlById(id);
             sortUrlRepository.delete(shortUrlToDelete);
 
         } catch (ResourceNotFoundException e) {
             throw new ResourceNotFoundException(ShortUrl.class.getSimpleName(), id);
         }
     }
+
+    @Override
+    public String getFullUrl(String id) {
+        ShortUrl shortUrl = sortUrlRepository.findByShortUrl(id);
+
+        if (shortUrl != null) {
+            return shortUrl.getUrl();
+        }
+
+        return null;
+    }
+
+
 }

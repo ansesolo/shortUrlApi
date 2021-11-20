@@ -6,7 +6,7 @@ import javax.persistence.*;
 @Table(name = "short_urls")
 public class ShortUrl implements CommonEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     private String shortUrl;

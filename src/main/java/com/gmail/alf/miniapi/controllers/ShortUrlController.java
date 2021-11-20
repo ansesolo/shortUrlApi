@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -18,15 +19,22 @@ public class ShortUrlController {
         this.shortUrlService = shortUrlService;
     }
 
+    @GetMapping("{id}")
+    public ResponseEntity<Void> redirect(@PathVariable(value = "id") String id) {
+        String url = shortUrlService.getFullUrl(id);
+
+        return ResponseEntity.status(HttpStatus.FOUND).location(URI.create(url)).build();
+    }
+
     @GetMapping("api/v1/short_url")
     public List<ShortUrl> findAllShortURLs() {
-        return shortUrlService.findAllShortURLs();
+        return shortUrlService.findAllShortUrls();
     }
 
     @GetMapping("api/v1/short_url/{id}")
     public ResponseEntity<ShortUrl> findShortURLById(@PathVariable(value = "id") long id) {
         try {
-            ShortUrl shortUrl = shortUrlService.findShortURLById(id);
+            ShortUrl shortUrl = shortUrlService.findShortUrlById(id);
             return ResponseEntity.ok().body(shortUrl);
 
         } catch (ResourceNotFoundException e) {

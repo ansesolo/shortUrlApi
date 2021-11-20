@@ -6,13 +6,15 @@ import java.util.List;
 
 public interface ShortUrlService {
 
-    List<ShortUrl> findAllShortURLs();
+    List<ShortUrl> findAllShortUrls();
 
-    ShortUrl findShortURLById(long id);
+    ShortUrl findShortUrlById(long id);
 
     ShortUrl createShortUrl(ShortUrl shortURL);
 
     ShortUrl updateShortUrl(long id, ShortUrl shortURL);
 
     void deleteShortUrl(Long id);
+
+    String getFullUrl(String id);
 }
