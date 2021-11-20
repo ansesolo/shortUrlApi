@@ -50,7 +50,7 @@ public class ShortUrlController {
         }
     }
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("api/v1/short_url/{id}")
     public ResponseEntity<ShortUrl> deleteShortUrl(@PathVariable(value = "id") long id) {
         try {
             shortUrlService.deleteShortUrl(id);
