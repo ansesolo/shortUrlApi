@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 
@@ -43,12 +44,12 @@ public class ShortUrlController {
     }
 
     @PostMapping("api/v1/short_url")
-    public ResponseEntity<ShortUrl> createShortUrl(@RequestBody ShortUrl shortURL) {
+    public ResponseEntity<ShortUrl> createShortUrl(@Valid @RequestBody ShortUrl shortURL) {
         return new ResponseEntity<>(shortUrlService.createShortUrl(shortURL), HttpStatus.CREATED);
     }
 
     @PutMapping("api/v1/short_url/{id}")
-    public ResponseEntity<ShortUrl> updateShortUrl(@PathVariable(value = "id") long id, @RequestBody ShortUrl shortURL) {
+    public ResponseEntity<ShortUrl> updateShortUrl(@PathVariable(value = "id") long id, @Valid @RequestBody ShortUrl shortURL) {
         try {
             ShortUrl updatedShortUrl = shortUrlService.updateShortUrl(id, shortURL);
             return ResponseEntity.ok().body(updatedShortUrl);
