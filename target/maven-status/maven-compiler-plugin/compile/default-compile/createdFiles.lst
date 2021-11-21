@@ -4,5 +4,6 @@ com\gmail\alf\miniapi\entities\ShortUrl.class
 com\gmail\alf\miniapi\exceptions\ResourceNotFoundException.class
 com\gmail\alf\miniapi\SpringbootApplication.class
 com\gmail\alf\miniapi\services\ShortUrlService.class
+com\gmail\alf\miniapi\exceptions\ResourceIntegrityException.class
 com\gmail\alf\miniapi\services\impl\ShortUrlServiceImpl.class
 com\gmail\alf\miniapi\repositories\ShortUrlRepository.class

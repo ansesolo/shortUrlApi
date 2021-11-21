@@ -6,9 +6,6 @@ import javax.validation.constraints.Size;
 
 /**
  * The entity declaration for persistence.
- * Potential improvement :
- *      manage unique constraint on attribute url.
- *      We can adopt another strategy for the id.
  */
 @Entity
 @Table(name = "short_urls")
@@ -22,6 +19,7 @@ public class ShortUrl implements CommonEntity {
 
     @Size(max = 255)
     @NotNull
+    @Column(unique = true)
     private String url;
 
     public ShortUrl() {

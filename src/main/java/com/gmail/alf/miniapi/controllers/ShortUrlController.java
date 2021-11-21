@@ -1,6 +1,7 @@
 package com.gmail.alf.miniapi.controllers;
 
 import com.gmail.alf.miniapi.entities.ShortUrl;
+import com.gmail.alf.miniapi.exceptions.ResourceIntegrityException;
 import com.gmail.alf.miniapi.exceptions.ResourceNotFoundException;
 import com.gmail.alf.miniapi.services.ShortUrlService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,40 +35,44 @@ public class ShortUrlController {
     }
 
     @GetMapping("api/v1/short_url/{id}")
-    public ResponseEntity<ShortUrl> findShortURLById(@PathVariable(value = "id") long id) {
+    public ResponseEntity<?> findShortURLById(@PathVariable(value = "id") long id) {
         try {
             ShortUrl shortUrl = shortUrlService.findShortUrlById(id);
             return ResponseEntity.ok().body(shortUrl);
 
         } catch (ResourceNotFoundException e) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
 
     @PostMapping("api/v1/short_url")
-    public ResponseEntity<ShortUrl> createShortUrl(@Valid @RequestBody ShortUrl shortURL) {
-        return new ResponseEntity<>(shortUrlService.createShortUrl(shortURL), HttpStatus.CREATED);
+    public ResponseEntity<?> createShortUrl(@Valid @RequestBody ShortUrl shortURL) {
+        try {
+            return new ResponseEntity<>(shortUrlService.createShortUrl(shortURL), HttpStatus.CREATED);
+        } catch (ResourceIntegrityException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @PutMapping("api/v1/short_url/{id}")
-    public ResponseEntity<ShortUrl> updateShortUrl(@PathVariable(value = "id") long id, @Valid @RequestBody ShortUrl shortURL) {
+    public ResponseEntity<?> updateShortUrl(@PathVariable(value = "id") long id, @Valid @RequestBody ShortUrl shortURL) {
         try {
             ShortUrl updatedShortUrl = shortUrlService.updateShortUrl(id, shortURL);
             return ResponseEntity.ok().body(updatedShortUrl);
 
         } catch (ResourceNotFoundException e) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
 
     @DeleteMapping("api/v1/short_url/{id}")
-    public ResponseEntity<ShortUrl> deleteShortUrl(@PathVariable(value = "id") long id) {
+    public ResponseEntity<?> deleteShortUrl(@PathVariable(value = "id") long id) {
         try {
             shortUrlService.deleteShortUrl(id);
             return ResponseEntity.ok().build();
 
         } catch (ResourceNotFoundException e) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
 
@@ -77,13 +82,13 @@ public class ShortUrlController {
     }
 
     @GetMapping("{shortUrl}")
-    public ResponseEntity<Void> redirect(@PathVariable(value = "shortUrl") @NotNull String shortUrl) {
+    public ResponseEntity<?> redirect(@PathVariable(value = "shortUrl") @NotNull String shortUrl) {
         try {
             String url = shortUrlService.getFullUrl(shortUrl);
             return ResponseEntity.status(HttpStatus.FOUND).location(URI.create(url)).build();
 
         } catch (ResourceNotFoundException e) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
 

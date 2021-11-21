@@ -13,6 +13,7 @@ public interface ShortUrlService {
     /**
      * Get all ShortUrl existing in database.
      * Potential improvement : Paging the list of urls
+     *
      * @return the list of existing urls
      */
     List<ShortUrl> findAllShortUrls();
@@ -27,7 +28,8 @@ public interface ShortUrlService {
     ShortUrl findShortUrlById(long id) throws ResourceNotFoundException;
 
     /**
-     * Find a bean
+     * Find the original url from the short url.
+     *
      * @param id the ShortUrl id to found
      * @return the ShortUrl found
      * @throws ResourceNotFoundException if no ShortUrl has been found
@@ -35,14 +37,17 @@ public interface ShortUrlService {
     String getFullUrl(String id) throws ResourceNotFoundException;
 
     /**
-     * Create a ShortUrl
+     * Create a ShortUrl.
+     * In this method we create the short url by simply taking the hashcode of the url.
+     *
      * @param shortURL contains only the url to manage
      * @return the ShortUrl with id and generated short url
      */
     ShortUrl createShortUrl(ShortUrl shortURL);
 
     /**
-     * Update an existing ShortUrl
+     * Update an existing ShortUrl.
+     *
      * @param id the ShortUrl id to update
      * @param shortURL contain the new values for the ShortUrl
      * @return the updated ShortUrl
@@ -51,7 +56,8 @@ public interface ShortUrlService {
     ShortUrl updateShortUrl(long id, ShortUrl shortURL) throws ResourceNotFoundException;
 
     /**
-     * Delete a ShortUrl with is id
+     * Delete a ShortUrl from is id.
+     *
      * @param id the id of the ShortUrl to delete
      * @throws ResourceNotFoundException if no ShortUrl has been found
      */

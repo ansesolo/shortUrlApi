@@ -1,11 +1,15 @@
 package com.gmail.alf.miniapi.services.impl;
 import com.gmail.alf.miniapi.entities.ShortUrl;
+import com.gmail.alf.miniapi.exceptions.ResourceIntegrityException;
 import com.gmail.alf.miniapi.exceptions.ResourceNotFoundException;
 import com.gmail.alf.miniapi.repositories.ShortUrlRepository;
 import com.gmail.alf.miniapi.services.ShortUrlService;
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,7 +39,12 @@ public class ShortUrlServiceImpl implements ShortUrlService {
     public ShortUrl createShortUrl(ShortUrl shortUrl) {
 
         shortUrl.setShortUrl(String.valueOf(shortUrl.getUrl().hashCode()));
-        return sortUrlRepository.save(shortUrl);
+        try {
+            return sortUrlRepository.save(shortUrl);
+
+        } catch (DataIntegrityViolationException e) {
+            throw new ResourceIntegrityException(shortUrl);
+        }
     }
 
     @Override
