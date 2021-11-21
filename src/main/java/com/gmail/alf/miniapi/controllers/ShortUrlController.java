@@ -26,7 +26,7 @@ public class ShortUrlController {
     @Autowired
     private ShortUrlService shortUrlService;
 
-    @GetMapping("api/v1/short_url")
+    @GetMapping("short_url")
     public ResponseEntity<List<ShortUrl>> findAllShortURLs() {
 
         List<ShortUrl> shorUrls = shortUrlService.findAllShortUrls();
@@ -34,7 +34,7 @@ public class ShortUrlController {
         return new ResponseEntity<>(shorUrls, HttpStatus.OK);
     }
 
-    @GetMapping("api/v1/short_url/{id}")
+    @GetMapping("short_url/{id}")
     public ResponseEntity<?> findShortURLById(@PathVariable(value = "id") long id) {
         try {
             ShortUrl shortUrl = shortUrlService.findShortUrlById(id);
@@ -45,7 +45,7 @@ public class ShortUrlController {
         }
     }
 
-    @PostMapping("api/v1/short_url")
+    @PostMapping("short_url")
     public ResponseEntity<?> createShortUrl(@Valid @RequestBody ShortUrl shortURL) {
         try {
             return new ResponseEntity<>(shortUrlService.createShortUrl(shortURL), HttpStatus.CREATED);
@@ -54,7 +54,7 @@ public class ShortUrlController {
         }
     }
 
-    @PutMapping("api/v1/short_url/{id}")
+    @PutMapping("short_url/{id}")
     public ResponseEntity<?> updateShortUrl(@PathVariable(value = "id") long id, @Valid @RequestBody ShortUrl shortURL) {
         try {
             ShortUrl updatedShortUrl = shortUrlService.updateShortUrl(id, shortURL);
@@ -65,7 +65,7 @@ public class ShortUrlController {
         }
     }
 
-    @DeleteMapping("api/v1/short_url/{id}")
+    @DeleteMapping("short_url/{id}")
     public ResponseEntity<?> deleteShortUrl(@PathVariable(value = "id") long id) {
         try {
             shortUrlService.deleteShortUrl(id);
@@ -78,7 +78,7 @@ public class ShortUrlController {
 
     @GetMapping("/")
     public String home() {
-        return "Application mini api! <br> Use api/v1/short_url or /[shorturl]";
+        return "Application mini api!";
     }
 
     @GetMapping("{shortUrl}")
