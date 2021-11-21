@@ -3,33 +3,34 @@ package com.gmail.alf.miniapi.controllers;
 import com.gmail.alf.miniapi.entities.ShortUrl;
 import com.gmail.alf.miniapi.exceptions.ResourceNotFoundException;
 import com.gmail.alf.miniapi.services.ShortUrlService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.net.URI;
 import java.util.List;
 
+/**
+ * Controller which manage URL request for the api.
+ * Validated is used to validate parameters request
+ */
+@Validated
 @RestController
 public class ShortUrlController {
 
-    private final ShortUrlService shortUrlService;
-
-    private ShortUrlController(ShortUrlService shortUrlService) {
-        this.shortUrlService = shortUrlService;
-    }
-
-    @GetMapping("{id}")
-    public ResponseEntity<Void> redirect(@PathVariable(value = "id") String id) {
-        String url = shortUrlService.getFullUrl(id);
-
-        return ResponseEntity.status(HttpStatus.FOUND).location(URI.create(url)).build();
-    }
+    @Autowired
+    private ShortUrlService shortUrlService;
 
     @GetMapping("api/v1/short_url")
-    public List<ShortUrl> findAllShortURLs() {
-        return shortUrlService.findAllShortUrls();
+    public ResponseEntity<List<ShortUrl>> findAllShortURLs() {
+
+        List<ShortUrl> shorUrls = shortUrlService.findAllShortUrls();
+
+        return new ResponseEntity<>(shorUrls, HttpStatus.OK);
     }
 
     @GetMapping("api/v1/short_url/{id}")
@@ -72,6 +73,18 @@ public class ShortUrlController {
 
     @GetMapping("/")
     public String home() {
-        return "Application mini api! \n Use api/v1/short_url";
+        return "Application mini api! <br> Use api/v1/short_url or /[shorturl]";
     }
+
+    @GetMapping("{shortUrl}")
+    public ResponseEntity<Void> redirect(@PathVariable(value = "shortUrl") @NotNull String shortUrl) {
+        try {
+            String url = shortUrlService.getFullUrl(shortUrl);
+            return ResponseEntity.status(HttpStatus.FOUND).location(URI.create(url)).build();
+
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
 }

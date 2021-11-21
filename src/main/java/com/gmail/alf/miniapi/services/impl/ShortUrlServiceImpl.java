@@ -70,9 +70,9 @@ public class ShortUrlServiceImpl implements ShortUrlService {
 
         if (shortUrl != null) {
             return shortUrl.getUrl();
+        } else {
+            throw new ResourceNotFoundException(ShortUrl.class.getSimpleName(), "ShortUrl", id);
         }
-
-        return null;
     }
 
 
