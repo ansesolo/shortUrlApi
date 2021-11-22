@@ -32,3 +32,5 @@ I create an interface for entity even if there is not really useful but
 it allows to consider future standardization.
 
 In the same way, I create personalized exception. 
+
+For the test I used Junit5 because of possibility to ordered method execution.
