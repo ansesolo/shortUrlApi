@@ -3,17 +3,17 @@ url serveur : https://shorturl-332716.oa.r.appspot.com
 Use case :
 
     - Get all short url - GET Method
-    https://shorturl-332716.oa.r.appspot.com/api/v1/short_url
+    https://shorturl-332716.oa.r.appspot.com/short_url
 
     - Get one short url - GET Method
-    https://shorturl-332716.oa.r.appspot.com/api/v1/short_url/{id}
+    https://shorturl-332716.oa.r.appspot.com/short_url/{id}
 
     - Create short url. - POST Method
-    https://shorturl-332716.oa.r.appspot.com/api/v1/short_url
+    https://shorturl-332716.oa.r.appspot.com/short_url
     Body must contains json structure with attribute "url"
 
     - Delete short url. - DELETE Method 
-    https://shorturl-332716.oa.r.appspot.com/api/v1/short_url/{id}
+    https://shorturl-332716.oa.r.appspot.com/short_url/{id}
 
     - Use short url
     https://shorturl-332716.oa.r.appspot.com/{short_url}
